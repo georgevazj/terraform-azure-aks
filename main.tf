@@ -13,8 +13,6 @@ provider "azurerm" {
   }
 }
 
-data "azurerm_client_config" "current"{}
-
 data "azurerm_resource_group" "rsg" {
   name = var.resource_group_name
 }
@@ -25,16 +23,17 @@ resource "azurerm_private_dns_zone" "dns_zone" {
     resource_group_name = data.azurerm_resource_group.rsg.name
 }
 
-resource "azurerm_role_assignment" "role" {
-    scope = azurerm_private_dns_zone.dns_zone.id
-    role_definition_name = "Private DNS Zone Contributor"
-    principal_id = data.azurerm_client_config.current.service_principal_object_id
-}
 
 resource "azurerm_user_assigned_identity" "identity" {
   name                = var.identity_name
   resource_group_name = data.azurerm_resource_group.rsg.name
   location            = data.azurerm_resource_group.rsg.location
+}
+
+resource "azurerm_role_assignment" "role" {
+    scope = azurerm_private_dns_zone.dns_zone.id
+    role_definition_name = "Private DNS Zone Contributor"
+    principal_id = azurerm_user_assigned_identity.identity.principal_id
 }
 
 # AKS Cluster

@@ -22,8 +22,8 @@ variable "aks_dns_prefix" {
 
 variable "aks_pool_name" {
   type = string
-  description = "(Optional) AKS node pool name. Default is aks_pool"
-  default = "aks_pool"
+  description = "(Optional) AKS node pool name."
+  default = "default"
 }
 
 variable "aks_node_size" {

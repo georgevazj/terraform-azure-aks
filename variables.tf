@@ -1,51 +1,72 @@
-# Module variables
-variable "resource_group_name" {
-    type = string
-    description = "(Required) Target resource group"
-}
-
-variable "identity_name" {
+## Workload variables
+variable "description" {
   type = string
-  description = "(Required) Identity name"
+  description = "(Required) Azure workload description"
 }
 
-# AKS variables
+variable "workload_acronym" {
+  type = string
+  description = "(Required) Santander project acronym"
+}
+
+## Networking
+variable "vnet_rsg_name" {
+  type = string
+  description = "(Required) Virtual network resource group name"
+}
+
+variable "vnet_name" {
+  type = string
+  description = "(Required) Virtual network name"
+}
+
+variable "snet_name" {
+  type = string
+  description = "(Required) Subnet name"
+}
+
+## Kubernetes service
 variable "aks_name" {
-    type = string
-    description = "(Required) AKS cluster name"
-}
-
-variable "aks_dns_prefix" {
-    type = string
-    description = "(Required) AKS DNS prefix"
-}
-
-variable "aks_pool_name" {
   type = string
-  description = "(Optional) AKS node pool name."
-  default = "default"
+  description = "(Required) The name of the Managed Kubernetes Cluster to create. Changing this forces a new resource to be created."
 }
 
-variable "aks_node_size" {
+variable "dns_prefix" {
   type = string
-  description = "(Optional) AKS node size. Default is Standard_D2s_v3"
-  default = "Standard_D2s_v3"
+  description = "(Required) Specifies the DNS prefix to use with private clusters."
 }
 
-variable "aks_node_count" {
+variable "nodepool_name" {
+  type = string
+  description = "(Optional) Node pool name. Default: system"
+  default = "system"
+}
+
+variable "node_count" {
   type = number
-  description = "(Required) AKS node count. Default is 1"
   default = 1
 }
 
-variable "private_cluster_enabled" {
-    type = bool
-    description = "(Optional) Enable private cluster"
-    default = true
+variable "enable_autoscaling" {
+  type = bool
+  description = "(Optional) Should the Kubernetes Auto Scaler be enabled for this Node Pool? Defaults to true."
+  default = true
 }
 
-# Misc
-variable "project_tag" {
-    type = string
-    description = "(Required) Project tag"
+variable "vm_size" {
+  type = string
+  description = "(Required) Node size. Default: Standard_D2_v2"
+  default = "Standard_D2_v2"
+}
+
+variable "outbound_type" {
+  type = string
+  description = "(Optional) The outbound (egress) routing method which should be used for this Kubernetes Cluster. Possible values are loadBalancer and userDefinedRouting. Defaults to userDefinedRouting"
+  default = "userDefinedRouting"
+}
+
+variable "network_policy" {
+  type = string
+  description = "(Optional) Sets up network policy to be used. Default: calico"
+  default = "calico"
 }
